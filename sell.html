@@ -1,55 +1,89 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>GoatSwipes</title>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">  
+    <title>GoatSwipes</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">  
     <script>
         function saveSwipeDetails() {
-           var price = document.getElementById("swipePrice").value;
-           var date = document.getElementById("swipeDate").value;
-     
-           // Assuming 'swipes' is an array in localStorage
-           var swipes = JSON.parse(localStorage.getItem('swipes')) || [];
-           swipes.push({ price: price, date: date });
-     
-           localStorage.setItem('swipes', JSON.stringify(swipes));
+            var price = document.getElementById("swipePrice").value;
+            var dateInput = document.getElementById("swipeDate");
+            var date = dateInput.value;
+
+            // Get today's date
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; // January is 0!
+            var yyyy = today.getFullYear();
+
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+
+            var currentDate = yyyy + '-' + mm + '-' + dd;
+
+            // Check if the selected date is not earlier than today's date
+            if (date < currentDate) {
+                alert("Please select a valid date that hasn't passed yet.");
+                dateInput.value = currentDate; // Reset the date input to today's date
+                return;
+            }
+
+            // Assuming 'swipes' is an array in localStorage
+            var swipes = JSON.parse(localStorage.getItem('swipes')) || [];
+            swipes.push({ price: price, date: date });
+
+            localStorage.setItem('swipes', JSON.stringify(swipes));
+
+            // Optionally, you can close the popup or perform any other actions here
+            document.getElementById('popup').style.display = 'none';
         }
-     </script>     
+
+        function reopenPopup() {
+            // Reset the form
+            document.getElementById('sellForm').reset();
+
+            // Display the popup
+            document.getElementById('popup').style.display = 'block';
+        }
+    </script>     
 </head>
 <body>
-	<header>
-		<div class="main">
-		<div class="logo">
-			<img src="wpilogo.webp">
-		</div>
-		
-		 <ul>
-		 <li class="active"><a href=index.html><i class="fa fa-home"></i>Home</a></li>
-		 <li><a href=about.html>About Us</a></li>
-         <li><a href=login.html>Account</a></li>
-
-
-		 </div>
-		 <div class="title">
+    <header>
+        <div class="main">
+            <div class="logo">
+                <img src="wpilogo.webp">
+            </div>
+            
+            <ul>
+                <li class="active"><a href="index.html"><i class="fa fa-home"></i>Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="login.html">Account</a></li>
+            </ul>
+        </div>
+        <div class="title">
             <h1>SELL SWIPES</h1>
-            <a href="#popup" class="popup-trigger">+</a>
+            <a href="#" class="popup-trigger" onclick="reopenPopup()">+</a>
             
             <div id="popup" class="popup">
                 <h2>Enter Swipe Details</h2>
-                <form id = "sellForm">
+                <form id="sellForm">
                     <label for="swipePrice">Price:</label>
-                  <input type="text" id="swipePrice" name="swipePrice" placeholder="Enter the price" required>
+                    <input type="text" id="swipePrice" name="swipePrice" placeholder="Enter the price" required>
                     <br>
                     <br>
-                  <label for="swipeDate">Date:</label>
-                  <input type="date" id="swipeDate" name="swipeDate" required>
-                  <input type="submit" value="Submit" onclick="saveSwipeDetails()">
+                    <label for="swipeDate">Date:</label>
+                    <input type="date" id="swipeDate" name="swipeDate" min="<?php echo date('Y-m-d'); ?>" required>
+                    <input type="button" value="Submit" onclick="saveSwipeDetails()">
                 </form>
                 <br>
-                <a href="#" class="close-popup">Close</a>
-              </div>
-                          
-		 	</header>
+                <a href="#" class="close-popup" onclick="document.getElementById('popup').style.display = 'none';">Close</a>
+            </div>
+        </div>
+    </header>
 </body>
 </html>

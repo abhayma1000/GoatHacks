@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>GoatSwipes</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">  
     <style>
        #swipesList {
@@ -25,7 +25,7 @@
 }
 
 .swipeItem {
-    width: 48%;
+    width: 68%;
     margin-bottom: 10px;
     padding: 10px;
     border: 1px solid #ddd;
@@ -64,51 +64,119 @@
     padding: 10px;
     text-align: left;
 }
+.modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            text-align: center;
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 20%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
     <script>
         function displaySwipes() {
-            var swipes = JSON.parse(localStorage.getItem('swipes')) || [];
-            var swipesListContainer = document.getElementById('swipesList');
-  
-            // Clear the existing content
-            swipesListContainer.innerHTML = '';
+    var swipes = JSON.parse(localStorage.getItem('swipes')) || [];
+    var swipesListContainer = document.getElementById('swipesList');
 
-            for (var i = 0; i < swipes.length; i++) {
-                var swipeDetails = swipes[i];
-                var swipeItem = document.createElement('div');
-                swipeItem.className = 'swipeItem';
-                swipeItem.innerHTML = `<p>Price: ${swipeDetails.price}, Date: ${swipeDetails.date}</p>`;
-                swipesListContainer.appendChild(swipeItem);
-            }
+    // Clear the existing content
+    swipesListContainer.innerHTML = '';
+
+    // Remove swipes with dates earlier than today
+    var currentDate = new Date();
+    swipes = swipes.filter(function(swipeDetails) {
+        return new Date(swipeDetails.date) >= currentDate;
+    });
+
+    // Update localStorage with filtered swipes
+    localStorage.setItem('swipes', JSON.stringify(swipes));
+
+    // Render the remaining swipes
+    for (var i = 0; i < swipes.length; i++) {
+        var swipeDetails = swipes[i];
+        var swipeItem = document.createElement('div');
+        swipeItem.className = 'swipeItem';
+
+        // Add swipe details
+        swipeItem.innerHTML += `<p>Price: ${swipeDetails.price}, Date: ${swipeDetails.date}</p>`;
+
+        swipesListContainer.appendChild(swipeItem);
+
+        // Add a connect button outside the swipeItem with margin
+        var connectButton = document.createElement('button');
+        connectButton.innerHTML = 'Connect';
+        connectButton.setAttribute('onclick', 'handleConnectButtonClick(' + i + ')');
+        connectButton.style.padding = '5px';
+        connectButton.style.margin = '5px'; 
+        swipesListContainer.appendChild(connectButton);
+    }
+}
+
+function filterByOption(option) {
+    var swipes = JSON.parse(localStorage.getItem('swipes')) || [];
+
+    if (option === 'price') {
+        swipes.sort(function(a, b) {
+            return parseFloat(a.price) - parseFloat(b.price);
+        });
+    } else if (option === 'date') {
+        swipes.sort(function(a, b) {
+            return new Date(a.date) - new Date(b.date);
+        });
+    }
+
+    // Update localStorage with the sorted swipes
+    localStorage.setItem('swipes', JSON.stringify(swipes));
+
+    // Display the sorted swipes
+    displaySwipes();
+}
+
+
+        
+
+        function handleConnectButtonClick(index) {
+            // Show the modal
+            document.getElementById('myModal').style.display = 'block';
+
+            // Remove the corresponding swipeItem
+            var swipes = JSON.parse(localStorage.getItem('swipes')) || [];
+            swipes.splice(index, 1);
+            localStorage.setItem('swipes', JSON.stringify(swipes));
+
+            // Redisplay swipes
+            displaySwipes();
         }
 
-        function filterByOption(option) {
-            var swipes = JSON.parse(localStorage.getItem('swipes')) || [];
-            
-            if (option === 'price') {
-                var sortedSwipes = swipes.slice().sort(function(a, b) {
-                    return parseFloat(a.price) - parseFloat(b.price);
-                });
-            } else if (option === 'date') {
-                var sortedSwipes = swipes.slice().sort(function(a, b) {
-                    return new Date(a.date) - new Date(b.date);
-                });
-            }
-
-            displayFilteredSwipes(sortedSwipes);
-        }
-
-        function displayFilteredSwipes(filteredSwipes) {
-            var swipesListContainer = document.getElementById('swipesList');
-            swipesListContainer.innerHTML = '';
-
-            for (var i = 0; i < filteredSwipes.length; i++) {
-                var swipeDetails = filteredSwipes[i];
-                var swipeItem = document.createElement('div');
-                swipeItem.className = 'swipeItem';
-                swipeItem.innerHTML = `<p>Price: ${swipeDetails.price}, Date: ${swipeDetails.date}</p>`;
-                swipesListContainer.appendChild(swipeItem);
-            }
+        // Function to close the modal
+        function closeModal() {
+            document.getElementById('myModal').style.display = 'none';
         }
 
         // Call the displaySwipes function when the page loads
@@ -144,5 +212,11 @@
             <!-- This is where the swipes will be displayed -->
         </div>
     </header>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p>Thank you!</p>
+        </div>
+    </div>
 </body>
 </html>

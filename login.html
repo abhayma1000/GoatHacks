@@ -1,40 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>GoatSwipes</title>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoatSwipes</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <header>
+        <div class="main">
+            <div class="logo">
+                <img src="wpilogo.webp" alt="Logo">
+            </div>
+            <ul>
+                <li class="active"><a href="index.html"><i class="fa fa-home"></i>Home</a></li>
+            </ul>
+        </div>
+        <div class="loginwrapper">
+            <form action="index.html">
+                <h1>Login</h1>
+                <div class="input-box">
+                    <input type="text" placeholder="Username" required>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" placeholder="Password" required>
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+                <div class="remember-forgot">
+                    <label><input type="checkbox">Remember Me</label>
+                    <a href="#" onclick="showError()">Forgot Password</a>
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <div class="register-link">
+                    <p>Don't have an account? <a href="signup.html">Register</a></p>
+                </div>
+            </form>
+        </div>
+    </header>
 
-<header>
-	<div class="main">
-		<div class="logo">
-			<img src="wpilogo.webp">
-		</div>
-		
-		 <ul>
-		 <li class="active"><a href=index.html><i class="fa fa-home"></i>Home</a></li>
-		 </div>
-
-	<div class="loginwrapper">
-	  <form action="index.html">
-		<h1>Login</h1>
-		<div class="input-box">
-		  <input type="text" placeholder="Username" required>
-		  <i class='bx bxs-user'></i>
-		</div>
-		<div class="input-box">
-		  <input type="password" placeholder="Password" required>
-		  <i class='bx bxs-lock-alt' ></i>
-		</div>
-		<div class="remember-forgot">
-		  <label><input type="checkbox">Remember Me</label>
-		  <a href="#">Forgot Password</a>
-		</div>
-		<button type="submit" class="btn">Login</button>
-		<div class="register-link">
-		  <p>Dont have an account? <a href="signup.html">Register</a></p>
-		</div>
-	  </form>
-	</div>
-</header>
-  </html>
+    <script>
+        function showError() {
+            alert("Lol that's really too bad");
+        }
+    </script>
+</body>
+</html>
