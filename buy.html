@@ -1,28 +1,148 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>GoatSwipes</title>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">  
+    <title>GoatSwipes</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">  
+    <style>
+       #swipesList {
+    /* Your existing styles for swipesList */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 400px;
+    max-height: 300px;
+    overflow-y: auto;
+    margin: auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f8f8f8;
+}
 
+.swipeItem {
+    width: 48%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.filter-container {
+    position: absolute;
+    bottom: 41%;
+    left: 69%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+#filterButton {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.filter-dropdown {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    text-align: left;
+}
+
+.filter-container:hover .filter-dropdown {
+    display: block;
+}
+
+.filter-dropdown button {
+    width: 100%;
+    padding: 10px;
+    text-align: left;
+}
+    </style>
+    <script>
+        function displaySwipes() {
+            var swipes = JSON.parse(localStorage.getItem('swipes')) || [];
+            var swipesListContainer = document.getElementById('swipesList');
+  
+            // Clear the existing content
+            swipesListContainer.innerHTML = '';
+
+            for (var i = 0; i < swipes.length; i++) {
+                var swipeDetails = swipes[i];
+                var swipeItem = document.createElement('div');
+                swipeItem.className = 'swipeItem';
+                swipeItem.innerHTML = `<p>Price: ${swipeDetails.price}, Date: ${swipeDetails.date}</p>`;
+                swipesListContainer.appendChild(swipeItem);
+            }
+        }
+
+        function filterByOption(option) {
+            var swipes = JSON.parse(localStorage.getItem('swipes')) || [];
+            
+            if (option === 'price') {
+                var sortedSwipes = swipes.slice().sort(function(a, b) {
+                    return parseFloat(a.price) - parseFloat(b.price);
+                });
+            } else if (option === 'date') {
+                var sortedSwipes = swipes.slice().sort(function(a, b) {
+                    return new Date(a.date) - new Date(b.date);
+                });
+            }
+
+            displayFilteredSwipes(sortedSwipes);
+        }
+
+        function displayFilteredSwipes(filteredSwipes) {
+            var swipesListContainer = document.getElementById('swipesList');
+            swipesListContainer.innerHTML = '';
+
+            for (var i = 0; i < filteredSwipes.length; i++) {
+                var swipeDetails = filteredSwipes[i];
+                var swipeItem = document.createElement('div');
+                swipeItem.className = 'swipeItem';
+                swipeItem.innerHTML = `<p>Price: ${swipeDetails.price}, Date: ${swipeDetails.date}</p>`;
+                swipesListContainer.appendChild(swipeItem);
+            }
+        }
+
+        // Call the displaySwipes function when the page loads
+        window.onload = displaySwipes;
+    </script>     
 </head>
 <body>
-	<header>
-		<div class="main">
-		<div class="logo">
-			<img src="wpilogo.webp">
-		</div>
-		
-		 <ul>
-		 <li class="active"><a href=index.html><i class="fa fa-home"></i>Home</a></li>
-		 <li><a href=about.html>About Us</a></li>
-         <li><a href=login.html>Account</a></li>
+    <header>
+        <div class="main">
+            <div class="logo">
+                <img src="wpilogo.webp">
+            </div>
+            
+            <ul>
+                <li class="active"><a href="index.html"><i class="fa fa-home"></i>Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="login.html">Account</a></li>
+            </ul>
+        </div>
+        <div class="title">
+            <h1>BUY SWIPES</h1>
+        </div>
+    
+        <div class="filter-container">
+            <button id="filterButton">Filter Options</button>
+            <div class="filter-dropdown">
+                <button type="button" onclick="filterByOption('price')">Lowest to Highest Price</button>
+                <button type="button" onclick="filterByOption('date')">Earliest Date to Furthest Away</button>
+            </div>
+        </div>
 
-
-		 </div>
-		 <div class="title">
-		 	<h1>BUY SWIPES</h1>
-		 </div>
-		 	</header>
+        <div id="swipesList">
+            <!-- This is where the swipes will be displayed -->
+        </div>
+    </header>
 </body>
 </html>

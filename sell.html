@@ -4,7 +4,18 @@
 	<title>GoatSwipes</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">  
-
+    <script>
+        function saveSwipeDetails() {
+           var price = document.getElementById("swipePrice").value;
+           var date = document.getElementById("swipeDate").value;
+     
+           // Assuming 'swipes' is an array in localStorage
+           var swipes = JSON.parse(localStorage.getItem('swipes')) || [];
+           swipes.push({ price: price, date: date });
+     
+           localStorage.setItem('swipes', JSON.stringify(swipes));
+        }
+     </script>     
 </head>
 <body>
 	<header>
@@ -26,14 +37,14 @@
             
             <div id="popup" class="popup">
                 <h2>Enter Swipe Details</h2>
-                <form>
+                <form id = "sellForm">
                     <label for="swipePrice">Price:</label>
                   <input type="text" id="swipePrice" name="swipePrice" placeholder="Enter the price" required>
                     <br>
                     <br>
                   <label for="swipeDate">Date:</label>
                   <input type="date" id="swipeDate" name="swipeDate" required>
-                  <input type="submit" value="Submit">
+                  <input type="submit" value="Submit" onclick="saveSwipeDetails()">
                 </form>
                 <br>
                 <a href="#" class="close-popup">Close</a>

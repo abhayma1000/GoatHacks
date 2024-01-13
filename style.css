@@ -65,6 +65,9 @@ background-color:#fff;
 .title h2{
 	color: #fff;
 	font-size: 25px;
+	margin-top: 3%;
+	top: 250%;
+	left: 50%;
 	text-align: center;
 }
 .button{
@@ -153,7 +156,7 @@ background-color:#fff;
 	width: 98%;
 	height: 20px;
 	
-	margin: 60px -30px;
+	margin: 75px -30px;
   }
   .input-box input{
 	width: 100%;
@@ -266,4 +269,4 @@ background-color:#fff;
   text-decoration: none;
   border-radius: 5px;
 }
-  
+ 
