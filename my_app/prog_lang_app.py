@@ -6,11 +6,11 @@ app = Flask(__name__)
 # Sellers POST their information on the server and then the buyers GET this information on their local machine
 # The main operations are POST by the seller and GET by the buyers
 sell_offers_datastore = {
-    "1" : {"id": "1", "name": "Abhay", "Time of day": "Lunch", "Price": 10, "#MealSwipes": 1, "Location": "Morgan"},
-    "2" : {"id": "2", "name": "Stephen", "Time of day": "Dinner", "Price": 1, "#MealSwipes": 2, "Location": "Halal"},
-    "3" : {"id": "3", "name": "Khoi", "Time of day": "Breakfast", "Price": 2, "#MealSwipes": 5, "Location": "Morgan"},
-    "4" : {"id": "4", "name": "Huy", "Time of day": "Lunch", "Price": 3, "#MealSwipes": 3, "Location": "Halal"},
-    "5" : {"id": "5", "name": "Phong", "Time of day": "Dinner", "Price": 4, "#MealSwipes": 0, "Location": "CC"},
+    "1" : {"id": "1", "name": "Abhay", "email": "amathur3@wpi.edu", "Price": 10, "Day": "Monday"},
+    "2" : {"id": "2", "name": "Stephen", "email": "amathur3@wpi.edu", "Price": 10, "Day": "Monday"},
+    "3" : {"id": "3", "name": "Abhay", "email": "amathur3@wpi.edu", "Price": 10, "Day": "Monday"},
+    "4" : {"id": "4", "name": "Abhay", "email": "amathur3@wpi.edu", "Price": 10, "Day": "Monday"},
+    "5" : {"id": "5", "name": "Abhay", "email": "amathur3@wpi.edu", "Price": 10, "Day": "Monday"},
 }
 
 @app.route('/sell_offers', methods=['GET', 'POST'])
@@ -60,8 +60,7 @@ def delete_sell_offer(lang_name):
 # Buyers post this information that they want to buy a certain ID's service
 # Main operations are POST by the buyer and then GET (only ones with their name) for the seller
 buy_confirmations_datastore = {
-    "1" : {"id": "1", "name": "Abhay", "Time of day": "Lunch", "Price": 10, 
-    "#MealSwipes": 1, "Location": "Morgan", "Buyer Name": "Jimmy", "Exact Time": "11:00", "Exact Location": "Near Trash Can"},
+    "1" : {"id": "1", "name": "Abhay", "email": "amathur3@wpi.edu", "Price": 10, "Day": "Monday", "Buyer Name": "Jimmy", "Buyer Email": "jimmy@wpi.edu"},
 }
 
 @app.route('/buy_confirmations', methods=['GET', 'POST'])
