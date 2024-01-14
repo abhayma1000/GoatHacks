@@ -1,4 +1,4 @@
-# GoSwipes for GoatHacks2024
+# GoatSwipes for GoatHacks2024
 
 ## Teamates
 * Stephen Le
@@ -9,7 +9,7 @@
 
 ## Project
 
-GoSwipes connects freshmen who have extra meal swipes at the end of the week to any upperclassmen who would like a convenient meal on campus. 
+GoatSwipes connects freshmen who have extra meal swipes at the end of the week to any upperclassmen who would like a convenient meal on campus. 
 
 
 ## Run Instructions
