@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>GoatSwipe</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+</head>
+<body>
+    <form>
+        <input type="text" id="input"/>
+        <button id="get">Press Me For Get</button>
+        <button id="post">Press Me For Post</button>
+        <p id="line1"></p>
+        <p id="line2"></p>
+        <p id="line3"></p> 
+    </form>
+    <!-- <div class="banner">
+        <div class="banner_content">
+            <p>"At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum 
+                deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, 
+                similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem 
+                rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil
+                impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. 
+                Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates 
+                repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut 
+                reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."</p>
+        </div>
+    </div> -->
+</body>
+<script>
+// <!-- <script>
+//     // <strong>  Get the button and container from HTML</strong>
+//     const button = document.getElementById("theButton")
+//     const data = document.getElementById("info")
+
+//     // <strong>// Create an event listener on the button element</strong>:
+//     button.onclick= function(){
+        
+//         // Get the receiver endpoint from Python using fetch:
+//         fetch("http://127.0.0.1:5000/sell_offers", 
+//             {
+//                 method: 'POST',
+//                 headers: {
+//                     'Content-type': 'application/json',
+//                     'Accept': 'application/json'
+//                 },
+//             // <strong>// Strigify the payload into JSON</strong>:
+//             body:JSON.stringify(cars)}).then(res=>{
+//                     if(res.ok){
+//                         return res.json()
+//                     }else{
+//                         alert("something is wrong")
+//                     }
+//                 }).then(jsonResponse=>{
+                    
+//                     // <strong>// Iterate through the data with Map and write your rendering logic</strong>:
+//                     jsonResponse.map(Main=> 
+//         Main.make==="Porsche"? data.innerHTML +="<p>"+ Main.make+" "+" is a good product":
+//         data.innerHTML +="<p>"+ Main.make+" "+"is an average product" ) 
+//     } 
+//     ).catch((err) => console.error(err)); }  -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const getBtn = document.getElementById('get')
+    const postBtn = document.getElementById('post')
+    const input = document.getElementById('input')
+    const input1 = document.getElementById('line1')
+    const input2 = document.getElementById('line2')
+    const input3 = document.getElementById('line3')
+    const baseURL = 'http://127.0.0.1:5000/'
+
+    getBtn.addEventListener('click', getInfo)
+    postBtn.addEventListener('click', postInfo)
+
+    async function getInfo(e) {
+        e.preventDefault()
+        const res = await Promise.resolve(fetch("http://127.0.0.1:5000/sell_offers"))
+        .then(response => response.json())
+        .then(data => {
+            console.log(data["sell_offers"][3])
+            input.value += data["sell_offers"][3]["Name"]
+            input1.value += data["sell_offers"][3]["Email"]
+            input2.value += data["sell_offers"][3]["Price"]
+            input3.value += data["sell_offers"][3]["Day"]});
+    }
+
+    let data = {"id": "6", "Name": "Phong", "Email": "amathur3@wpi.edu", "Price": 23323, "Date": "2024-03-23"};
+
+    async function postInfo(e) {
+        e.preventDefault()
+        const response = await Promise.resolve(fetch("http://127.0.0.1:5000/sell_offers", {
+            method: "POST", // *GET, POST, PUT, DELETE, etc.
+            mode: "no-cors", // no-cors, *cors, same-origin
+            cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: "same-origin", // include, *same-origin, omit
+            headers: {
+            "Content-Type": "application/json",
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: "follow", // manual, *follow, error
+            referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            body: JSON.stringify(data), // body data type must match "Content-Type" header
+        })) // parses JSON response into native JavaScript objects
+    }
+
+    
+    // input.value = data
+
+
+    // async function postInfo(e) {
+    //     e.preventDefault()
+    //     if(input.value =='') return
+    //     const res = await fetch(baseURL + 'sell_offers',
+    //         {
+    //             method: 'POST',
+    //             headers: {
+    //                 "Content-Type": 'application.json'
+    //             },
+    //             body: JSON.stringify({
+    //                 parcel: input.value
+    //             })
+    //         })
+    //         console.log(res)
+    //         const data = await res.json()
+    //         input.value = data.info
+    // } 
+</script>
+</html>

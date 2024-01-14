@@ -2,15 +2,19 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
+from flask_cors import CORS
+
+cors = CORS(app)
+
 
 # Sellers POST their information on the server and then the buyers GET this information on their local machine
 # The main operations are POST by the seller and GET by the buyers
 sell_offers_datastore = {
-    "1" : {"id": "1", "name": "Abhay", "email": "amathur3@wpi.edu", "Price": 10, "Day": "Monday"},
-    "2" : {"id": "2", "name": "Stephen", "email": "amathur3@wpi.edu", "Price": 10, "Day": "Monday"},
-    "3" : {"id": "3", "name": "Abhay", "email": "amathur3@wpi.edu", "Price": 10, "Day": "Monday"},
-    "4" : {"id": "4", "name": "Abhay", "email": "amathur3@wpi.edu", "Price": 10, "Day": "Monday"},
-    "5" : {"id": "5", "name": "Abhay", "email": "amathur3@wpi.edu", "Price": 10, "Day": "Monday"},
+    "1" : {"id": "1", "Name": "Abhay", "Email": "amathur3@wpi.edu", "Price": 10, "Date": "2024-01-23"},
+    "2" : {"id": "2", "Name": "Stephen", "Email": "amathur3@wpi.edu", "Price": 1220, "Date": "2024-05-23"},
+    "3" : {"id": "3", "Name": "Hawking", "Email": "amathur3@wpi.edu", "Price": 333, "Date": "2024-02-23"},
+    "4" : {"id": "4", "Name": "Epstein", "Email": "amathur3@wpi.edu", "Price": 69, "Date": "2024-04-23"},
+    "5" : {"id": "5", "Name": "Phong", "Email": "amathur3@wpi.edu", "Price": 23323, "Date": "2024-03-23"},
 }
 
 @app.route('/sell_offers', methods=['GET', 'POST'])
@@ -60,7 +64,7 @@ def delete_sell_offer(lang_name):
 # Buyers post this information that they want to buy a certain ID's service
 # Main operations are POST by the buyer and then GET (only ones with their name) for the seller
 buy_confirmations_datastore = {
-    "1" : {"id": "1", "name": "Abhay", "email": "amathur3@wpi.edu", "Price": 10, "Day": "Monday", "Buyer Name": "Jimmy", "Buyer Email": "jimmy@wpi.edu"},
+    "1" : {"id": "1", "Name": "Abhay", "Email": "amathur3@wpi.edu", "Price": 10, "Day": "Monday", "Buyer Name": "Jimmy", "Buyer Email": "jimmy@wpi.edu"},
 }
 
 @app.route('/buy_confirmations', methods=['GET', 'POST'])
@@ -74,9 +78,15 @@ def list_buy_confirmations():
    return {"buy_confirmations":list(buy_confirmations_datastore.values())}
 
 def create_buy_confirmation(new_lang):
-   language_name = new_lang['id']
-   buy_confirmations_datastore[language_name] = new_lang
-   return new_lang
+    language_name = new_lang['id']
+    
+    for i in range(len(sell_offers_datastore)):
+        
+        if list(sell_offers_datastore.keys())[i] == new_lang['id']:
+            delete_sell_offer(new_lang['id'])
+
+            buy_confirmations_datastore[language_name] = new_lang
+            return new_lang
 
 @app.route('/buy_confirmations/<buy_confirmation_name>', methods=['GET', 'PUT', 'DELETE'])
 def buy_confirmation_route(buy_confirmation_name):
@@ -92,7 +102,7 @@ def get_buy_confirmation(buy_confirmation_name):
     new_datastore = []
 
     for i in buy_confirmations_datastore.values():
-        if i['name'] == buy_confirmation_name:
+        if i['Name'] == buy_confirmation_name:
             new_datastore.append(i)
     
     return new_datastore

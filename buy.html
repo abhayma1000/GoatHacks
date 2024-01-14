@@ -3,7 +3,7 @@
 <head>
     <title>GoatSwipes</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">  
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
        #swipesList {
     /* Your existing styles for swipesList */
@@ -101,21 +101,42 @@
         }
     </style>
     <script>
-        function displaySwipes() {
-    var swipes = JSON.parse(localStorage.getItem('swipes')) || [];
+
+let swipes;
+
+async function displayInitial(e) {
+
+    let data1;
+
+    e.preventDefault()
+    const res = await Promise.resolve(fetch("http://127.0.0.1:5000/sell_offers"))
+    .then(response => response.json())
+    .then(data => {
+        data1 = data["sell_offers"]
+    });
+
+    for (let i = 0; i < data1.length; i++) {
+        console.log(data1[i]);
+    }
+
+    swipes = data1;
+
+    displaySwipes();
+}
+function displaySwipes() {
     var swipesListContainer = document.getElementById('swipesList');
+
 
     // Clear the existing content
     swipesListContainer.innerHTML = '';
 
+
     // Remove swipes with dates earlier than today
     var currentDate = new Date();
     swipes = swipes.filter(function(swipeDetails) {
-        return new Date(swipeDetails.date) >= currentDate;
+        return new Date(swipeDetails.Date) >= currentDate;
     });
 
-    // Update localStorage with filtered swipes
-    localStorage.setItem('swipes', JSON.stringify(swipes));
 
     // Render the remaining swipes
     for (var i = 0; i < swipes.length; i++) {
@@ -124,7 +145,7 @@
         swipeItem.className = 'swipeItem';
 
         // Add swipe details
-        swipeItem.innerHTML += `<p>Price: ${swipeDetails.price}, Date: ${swipeDetails.date}</p>`;
+        swipeItem.innerHTML += `<p>Price: ${swipeDetails.Price}, Date: ${swipeDetails.Date}</p>`;
 
         swipesListContainer.appendChild(swipeItem);
 
@@ -138,50 +159,50 @@
     }
 }
 
+
+
 function filterByOption(option) {
-    var swipes = JSON.parse(localStorage.getItem('swipes')) || [];
+
+    console.log("Hi");
 
     if (option === 'price') {
         swipes.sort(function(a, b) {
-            return parseFloat(a.price) - parseFloat(b.price);
+            return parseFloat(a.Price) - parseFloat(b.Price);
         });
     } else if (option === 'date') {
         swipes.sort(function(a, b) {
-            return new Date(a.date) - new Date(b.date);
+            return new Date(a.Date) - new Date(b.Date);
         });
     }
 
-    // Update localStorage with the sorted swipes
-    localStorage.setItem('swipes', JSON.stringify(swipes));
 
     // Display the sorted swipes
-    displaySwipes();
+    displaySwipes(event);
 }
 
 
         
 
-        function handleConnectButtonClick(index) {
-            // Show the modal
-            document.getElementById('myModal').style.display = 'block';
+function handleConnectButtonClick(index) {
+    // Show the modal
+    document.getElementById('myModal').style.display = 'block';
 
-            // Remove the corresponding swipeItem
-            var swipes = JSON.parse(localStorage.getItem('swipes')) || [];
-            swipes.splice(index, 1);
-            localStorage.setItem('swipes', JSON.stringify(swipes));
+    // Remove the corresponding swipeItem
+    swipes.splice(index, 1);
 
-            // Redisplay swipes
-            displaySwipes();
-        }
+    // Redisplay swipes
+    displaySwipes(event);
+}
 
-        // Function to close the modal
-        function closeModal() {
-            document.getElementById('myModal').style.display = 'none';
-        }
+// Function to close the modal
+function closeModal() {
+    document.getElementById('myModal').style.display = 'none';
+}
 
-        // Call the displaySwipes function when the page loads
-        window.onload = displaySwipes;
-    </script>     
+ // Call the displaySwipes function when the page loads
+window.onload = displayInitial;
+
+</script>     
 </head>
 <body>
     <header>
@@ -203,8 +224,8 @@ function filterByOption(option) {
         <div class="filter-container">
             <button id="filterButton">Filter Options</button>
             <div class="filter-dropdown">
-                <button type="button" onclick="filterByOption('price')">Lowest to Highest Price</button>
-                <button type="button" onclick="filterByOption('date')">Earliest Date to Furthest Away</button>
+                <button type="button" onclick="filterByOption('price', swipes)">Lowest to Highest Price</button>
+                <button type="button" onclick="filterByOption('date', swipes)">Earliest Date to Furthest Away</button>
             </div>
         </div>
 
