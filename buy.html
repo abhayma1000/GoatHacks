@@ -152,10 +152,7 @@ function displaySwipes() {
         swipeItem.className = 'swipeItem';
 
         // Add swipe details
-        if (swipeDetails.Type) {
-            swipeItem.innerHTML += `<p>Price: ${swipeDetails.Price}, Date: ${swipeDetails.Date}, Special</p>`;
-        }
-        else swipeItem.innerHTML += `<p>Price: ${swipeDetails.Price}, Date: ${swipeDetails.Date}, Morgan</p>`;
+        swipeItem.innerHTML += `<p>Price: ${swipeDetails.Price}, Date: ${swipeDetails.Date}`;
 
         swipesListContainer.appendChild(swipeItem);
 
