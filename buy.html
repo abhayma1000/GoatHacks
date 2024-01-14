@@ -152,26 +152,24 @@ function displaySwipes() {
         swipeItem.className = 'swipeItem';
 
         // Add swipe details
-        swipeItem.innerHTML += `<p>Price: ${swipeDetails.Price}, Date: ${swipeDetails.Date}</p>`;
+        if (swipeDetails.Type) {
+            swipeItem.innerHTML += `<p>Price: ${swipeDetails.Price}, Date: ${swipeDetails.Date}, Special</p>`;
+        }
+        else swipeItem.innerHTML += `<p>Price: ${swipeDetails.Price}, Date: ${swipeDetails.Date}, Morgan</p>`;
 
         swipesListContainer.appendChild(swipeItem);
 
         // Add a connect button outside the swipeItem with margin
         var connectButton = document.createElement('button');
         connectButton.innerHTML = 'Connect';
-        connectButton.setAttribute('onclick', 'handleConnectButtonClick(' + i + ')');
+        connectButton.setAttribute('onclick', 'handleConnectButtonClick(event, ' + i + ')');
         connectButton.style.padding = '5px';
         connectButton.style.margin = '5px'; 
         swipesListContainer.appendChild(connectButton);
     }
 }
 
-
-
 function filterByOption(option) {
-
-    console.log("Hi");
-
     if (option === 'price') {
         swipes.sort(function(a, b) {
             return parseFloat(a.Price) - parseFloat(b.Price);
@@ -182,17 +180,30 @@ function filterByOption(option) {
         });
     }
 
-
     // Display the sorted swipes
-    displaySwipes(event);
+    displaySwipes();
 }
-
-
         
-
-function handleConnectButtonClick(index) {
+// const bye = document.getElementById("huyho")
+async function handleConnectButtonClick(e, index) {
     // Show the modal
     document.getElementById('myModal').style.display = 'block';
+    console.log(index);
+
+
+    // Remove the swipeItem from the database
+    let id = swipes[index].id
+
+    let email = swipes[index].Email
+    document.getElementById("myVariable").innerHTML = email;
+
+    e.preventDefault()
+    const res = await Promise.resolve(fetch("http://127.0.0.1:5000/sell_offers/" + id, { 
+            method: 'DELETE', 
+            headers: { 
+                'Content-type': 'application/json'
+            } 
+        }));
 
     // Remove the corresponding swipeItem
     swipes.splice(index, 1);
@@ -243,7 +254,8 @@ window.onload = displayInitial;
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
-            <p>Thank you!</p>
+            <p>Please contact the following email to setup transaction:</p>
+            <p id="myVariable"></p>
         </div>
     </div>
 </body>

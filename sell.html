@@ -10,6 +10,7 @@
             var dateInput = document.getElementById("swipeDate");
             var date = dateInput.value;
             var email = document.getElementById("swipeEmail").value;
+            var special = document.getElementById("swipeSpecial").value;
 
             // Get today's date
             var today = new Date();
@@ -40,7 +41,7 @@
                 return;
             }
 
-            let data = {"id": uuidv4() + "", "Email": email, "Price": price, "Date": date}
+            let data = {"id": uuidv4() + "", "Email": email, "Price": price, "Date": date, "Type": special}
 
             postInfo(event, data)
 
@@ -113,6 +114,10 @@
                     <br>
                     <label for="swipeDate">Date:</label>
                     <input type="date" id="swipeDate" name="swipeDate" min="<?php echo date('Y-m-d'); ?>" required>
+                    <br>
+                    <br>
+                    <label for="swipeSpecial">Special:</label>
+                    <input type="checkbox" id="swipeSpecial" name="swipeSpecial" min="Is it a Special?" required>
                     <input type="button" value="Submit" onclick="saveSwipeDetails()">
                 </form>
                 <br>
