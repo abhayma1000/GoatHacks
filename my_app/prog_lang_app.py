@@ -10,11 +10,11 @@ cors = CORS(app)
 # Sellers POST their information on the server and then the buyers GET this information on their local machine
 # The main operations are POST by the seller and GET by the buyers
 sell_offers_datastore = {
-    "1" : {"id": "1", "Name": "Abhay", "Email": "amathur3@wpi.edu", "Price": 10, "Date": "2024-01-23"},
-    "2" : {"id": "2", "Name": "Stephen", "Email": "amathur3@wpi.edu", "Price": 1220, "Date": "2024-05-23"},
-    "3" : {"id": "3", "Name": "Hawking", "Email": "amathur3@wpi.edu", "Price": 333, "Date": "2024-02-23"},
-    "4" : {"id": "4", "Name": "Epstein", "Email": "amathur3@wpi.edu", "Price": 69, "Date": "2024-04-23"},
-    "5" : {"id": "5", "Name": "Phong", "Email": "amathur3@wpi.edu", "Price": 23323, "Date": "2024-03-23"},
+    # "1" : {"id": "1", "Email": "huy3@wpi.edu", "Price": 10, "Date": "2024-01-23"},
+    # "2" : {"id": "2", "Email": "amathur3@wpi.edu", "Price": 1220, "Date": "2024-05-23"},
+    # "3" : {"id": "3", "Email": "phong@wpi.edu", "Price": 333, "Date": "2024-02-23"},
+    # "4" : {"id": "4", "Email": "epstein@wpi.edu", "Price": 69, "Date": "2024-04-23"},
+    # "5" : {"id": "5", "Email": "khoiisfat@wpi.edu", "Price": 23323, "Date": "2024-03-23"},
 }
 
 @app.route('/sell_offers', methods=['GET', 'POST'])

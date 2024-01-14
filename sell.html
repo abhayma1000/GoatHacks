@@ -9,6 +9,7 @@
             var price = document.getElementById("swipePrice").value;
             var dateInput = document.getElementById("swipeDate");
             var date = dateInput.value;
+            var email = document.getElementById("swipeEmail").value;
 
             // Get today's date
             var today = new Date();
@@ -33,15 +34,45 @@
                 return;
             }
 
-            // Assuming 'swipes' is an array in localStorage
-            // var swipes = JSON.parse(localStorage.getItem('swipes')) || [];
-            // swipes.push({ price: price, date: date });
+            var emailRegex = /^[^\s@]+@wpi.edu$/;
+            if (!emailRegex.test(email)) {
+                alert("Please enter a valid WPI Email");
+                return;
+            }
 
-            // localStorage.setItem('swipes', JSON.stringify(swipes));
+            let data = {"id": uuidv4() + "", "Email": email, "Price": price, "Date": date}
+
+            postInfo(event, data)
+
 
             // Optionally, you can close the popup or perform any other actions here
             document.getElementById('popup').style.display = 'none';
+
         }
+
+        function uuidv4() {
+            return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
+            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
+        }
+
+        async function postInfo(e, data) {
+            
+            e.preventDefault()
+            const response = await Promise.resolve(fetch("http://127.0.0.1:5000/sell_offers", {
+                method: "POST", // *GET, POST, PUT, DELETE, etc.
+                mode: "no-cors", // no-cors, *cors, same-origin
+                cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: "same-origin", // include, *same-origin, omit
+                headers: {
+                "Content-Type": "application/json",
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: "follow", // manual, *follow, error
+                referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify(data), // body data type must match "Content-Type" header
+            })) // parses JSON response into native JavaScript objects
+        }
+
 
         function reopenPopup() {
             // Reset the form
@@ -72,6 +103,10 @@
             <div id="popup" class="popup">
                 <h2>Enter Swipe Details</h2>
                 <form id="sellForm">
+                    <label for="swipeEmail">Email:</label>
+                    <input type="email" id="swipeEmail" name="swipeEmail" placeholder="Enter your email" required>
+                    <br>
+                    <br>
                     <label for="swipePrice">Price:</label>
                     <input type="text" id="swipePrice" name="swipePrice" placeholder="Enter the price" required>
                     <br>
